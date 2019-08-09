@@ -151,7 +151,7 @@
     audioElement4.fadeInInterval = @"1";
     audioElement4.fadeOutInterval = @"1";
     
-    [[MGAudioPlayer sharedManager] playAudios:@[audioElement1, audioElement3, audioElement2 , audioElement3].mutableCopy configurate:configurate];
+    [[MGAudioPlayer sharedManager] playAudios:@[audioElement1, audioElement3, audioElement2 , audioElement4].mutableCopy configurate:configurate];
     
     
 }
@@ -188,7 +188,6 @@
     configurate.repeat = YES;
     configurate.numberOfLoops = @(7);
     
-    
     MGAudioElement *audioElement1 = [[MGAudioElement alloc] init];
     audioElement1.musicName = @"breath_in";
     audioElement1.voiceDuration = @"4";
@@ -203,11 +202,11 @@
     
     MGAudioElement *audioElement3 = [[MGAudioElement alloc] init];
     audioElement3.musicName = @"breath_in";
-    audioElement3.voiceDuration = @"4";
+    audioElement3.voiceDuration = @"5";
     audioElement3.fadeInInterval = @"1";
     audioElement3.fadeOutInterval = @"1";
     
-    [[MGAudioPlayer sharedManager] playAudios:@[audioElement1, audioElement2, audioElement1].mutableCopy configurate:configurate];
+    [[MGAudioPlayer sharedManager] playAudios:@[audioElement1, audioElement2, audioElement3].mutableCopy configurate:configurate];
     
 }
 

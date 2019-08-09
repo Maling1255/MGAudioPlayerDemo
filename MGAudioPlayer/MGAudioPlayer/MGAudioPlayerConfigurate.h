@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 // 总的播放次数
 @property (nonatomic, strong) NSNumber *numberOfLoops;
-// 当前播放到第几次
+// 当前播放到第几次（播放次数索引）
 @property (nonatomic, assign) NSInteger currentIndex;
 
 @end

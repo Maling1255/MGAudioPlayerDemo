@@ -18,7 +18,7 @@
 @property (nonatomic, strong) AVAudioPlayer *currentPlayer;
 @property (nonatomic, strong) NSMutableArray *musicArray;
 @property (nonatomic, copy) NSString *preAudioName;
-@property (nonatomic, assign) NSInteger index;
+@property (nonatomic, assign) NSInteger index; // 播放声音数组索引
 
 
 // 监控进度
@@ -74,9 +74,15 @@ static NSMutableDictionary *_musicsDict;
 - (void)playAudios:(NSMutableArray *)array configurate:(MGAudioPlayerConfigurate *)configurate
 {
 
-    NSLog(@"origin  %p", configurate);
+    _index = 0;
+    NSLog(@"configurate  %p", configurate);
     [self.musicArray removeAllObjects];
     [self.musicArray addObjectsFromArray:array];
+    
+    for (MGAudioElement *elemnet in self.musicArray) {
+        NSLog(@"^%p", elemnet);
+    }
+    
     [self playAudio:_musicArray.firstObject config:configurate];
 }
 
@@ -86,7 +92,6 @@ static NSMutableDictionary *_musicsDict;
     _preAudioName = audio.musicName;
     
     MGAudioElement *currentElement = _musicsDict[_preAudioName];
-//    AVAudioPlayer *player = _musicsDict[_preAudioName];
     AVAudioPlayer *player = currentElement.audioPlayer;
     if (player == nil) {
         NSURL *url = [[NSBundle mainBundle] URLForResource:audio.musicName withExtension:@"mp3"];
@@ -98,11 +103,12 @@ static NSMutableDictionary *_musicsDict;
         audio.audioPlayer = player;
         audio.audioPlayer.audioConfig = config;
         _musicsDict[audio.musicName] = audio;
-        
     }
     player.audioConfig = config;
-
     player.volume = 0;
+    
+    // 2个相同musicName创建1个播放器，第二个audio.audioPlayer 为空,赋值
+    if (!audio.audioPlayer) {  audio.audioPlayer = player; }
     
     // 淡入过程
     NSTimeInterval interval = audio.fadeInInterval.floatValue / MGAUDIO_FADE_STEPS;
@@ -126,19 +132,23 @@ static NSMutableDictionary *_musicsDict;
         self.currentPlayTime = aimDuration;
     }
     else if (self.currentPlayTime > 0) {
-        self.currentPlayTime-=0.05;
+        self.currentPlayTime -= 0.05;
     } else {
         
         _index ++;
         if (_index < _musicArray.count)
         {
             MGAudioElement *element = _musicArray[_index];
+//            element.audioPlayer = audio.audioPlayer;
             [self playAudio:element config:audio.audioPlayer.audioConfig];
-            NSLog(@"播放下一个 %@   %@    %p %p", element.musicName, audio.musicName, element.audioPlayer, audio.audioPlayer);
+//            NSLog(@"播放下一个 %@   %@  %@  ||  %p %p", element.musicName, audio.musicName, element ,element.audioPlayer, audio.audioPlayer);
+            
+            NSLog(@"element: %p  %p", element, element.audioPlayer);
             
         }
         else
         {
+            // 数组音频播放+1遍
             audio.audioPlayer.audioConfig.currentIndex += 1;
             _index = 0;
             [self finishPlaying:audio.audioPlayer.audioConfig];
@@ -167,10 +177,9 @@ static NSMutableDictionary *_musicsDict;
     }
 }
 
-int i = 1;
 - (void)finishPlaying:(MGAudioPlayerConfigurate *)config
 {
-    NSLog(@"播放完成   %d    %p    %ld", i++, config, config.currentIndex);
+    NSLog(@"播放完成 config: %p    %ld", config, config.currentIndex);
     
     if (config.currentIndex < config.numberOfLoops.integerValue) {
         [self playAudios:[[NSMutableArray alloc] initWithArray:self.musicArray copyItems:YES] configurate:config];
@@ -234,8 +243,6 @@ int i = 1;
         currentAudioPlayer.volume = volume;
     }
 }
-
-
 
 - (NSMutableArray *)musicArray
 {
