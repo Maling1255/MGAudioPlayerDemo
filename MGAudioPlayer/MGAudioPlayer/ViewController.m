@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "MGAudioPlayer.h"
 #import "MGAudioPlayerConfigurate.h"
+#import "MGAudioElement.h"
 
 @interface ViewController ()
 
@@ -23,7 +24,27 @@
     MGAudioPlayerConfigurate *configurate = [[MGAudioPlayerConfigurate alloc] init];
     configurate.repeat = YES;
     configurate.numberOfLoops = @(4);
-    [[MGAudioPlayer sharedManager] playAudios:@[@"breath_in", @"breath_out", @"breath_hold"].mutableCopy configurate:configurate];
+    
+    
+    MGAudioElement *audioElement1 = [[MGAudioElement alloc] init];
+    audioElement1.musicName = @"breath_in";
+    audioElement1.voiceDuration = @"4";
+    audioElement1.fadeInInterval = @"1";
+    audioElement1.fadeOutInterval = @"1";
+    
+    MGAudioElement *audioElement2 = [[MGAudioElement alloc] init];
+    audioElement2.musicName = @"breath_out";
+    audioElement2.voiceDuration = @"8";
+    audioElement2.fadeInInterval = @"1";
+    audioElement2.fadeOutInterval = @"1";
+    
+    MGAudioElement *audioElement3 = [[MGAudioElement alloc] init];
+    audioElement3.musicName = @"breath_hold";
+    audioElement3.voiceDuration = @"5";
+    audioElement3.fadeInInterval = @"1";
+    audioElement3.fadeOutInterval = @"1";
+    
+    [[MGAudioPlayer sharedManager] playAudios:@[audioElement1, audioElement2, audioElement3].mutableCopy configurate:configurate];
     
     
     

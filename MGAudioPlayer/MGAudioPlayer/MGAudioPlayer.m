@@ -8,7 +8,10 @@
 
 #import "MGAudioPlayer.h"
 #import "AVAudioPlayer+Extension.h"
+#import "MGAudioElement.h"
 
+
+#define MGAUDIO_FADE_STEPS 30.0f
 @interface MGAudioPlayer ()<AVAudioPlayerDelegate>
 
 @property (nonatomic, strong) AVAudioPlayer *previousPlayer;
@@ -17,7 +20,8 @@
 @property (nonatomic, copy) NSString *preAudioName;
 @property (nonatomic, assign) NSInteger index;
 
-
+//监控进度
+@property (nonatomic, strong) NSTimer *avTimer;
 
 @end
 static MGAudioPlayer *_instance;
@@ -72,35 +76,56 @@ static NSMutableDictionary *_musicsDict;
     [self playAudio:_musicArray.firstObject config:configurate];
 }
 
-- (void)playAudio:(NSString *)musicName config:(MGAudioPlayerConfigurate *)config
+- (void)playAudio:(MGAudioElement *)audio config:(MGAudioPlayerConfigurate *)config
 {
-    assert(musicName);
-    _preAudioName = musicName;
+    assert(audio.musicName);
+    _preAudioName = audio.musicName;
     
-    AVAudioPlayer *player = _musicsDict[_preAudioName];
+    MGAudioElement *currentElement = _musicsDict[_preAudioName];
+//    AVAudioPlayer *player = _musicsDict[_preAudioName];
+    AVAudioPlayer *player = currentElement.audioPlayer;
     if (player == nil) {
-        NSURL *url = [[NSBundle mainBundle] URLForResource:musicName withExtension:@"mp3"];
+        NSURL *url = [[NSBundle mainBundle] URLForResource:audio.musicName withExtension:@"mp3"];
         player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
         player.delegate = self;
-        player.volume = 1;
         [player prepareToPlay];
         self.currentPlayer = player;
-        _musicsDict[musicName] = player;
+        
+        audio.audioPlayer = player;
+        _musicsDict[audio.musicName] = audio;
     }
     player.audioConfig = config;
+
     
-    
+    player.volume = 0;
+    NSTimeInterval interval = audio.fadeInInterval.floatValue / MGAUDIO_FADE_STEPS;
+    [NSTimer scheduledTimerWithTimeInterval:interval
+                                     target:self
+                                   selector:@selector(fadeIn:)
+                                   userInfo:player
+                                    repeats:YES];
     [player play];
+    
+    // 监听播放进度
+    self.avTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(timer:) userInfo:audio repeats:YES];
     self.previousPlayer = player;
 }
+
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
     _index ++;
     
+    // 每次进来释放上一个监听播放进度的定时器
+    if (self.avTimer) {
+        [self.avTimer invalidate];
+        self.avTimer = nil;
+    }
+    
     if (_index < _musicArray.count)
     {
-        [self playAudio:[NSString stringWithFormat:@"%@",_musicArray[_index]] config:player.audioConfig];
+        MGAudioElement *element = _musicArray[_index];
+        [self playAudio:element config:player.audioConfig];
     }
     else
     {
@@ -110,7 +135,6 @@ static NSMutableDictionary *_musicsDict;
         player.audioConfig.currentIndex += 1;
         _index = 0;
         [self finishPlaying:player.audioConfig];
-
     }
 }
 
@@ -122,12 +146,67 @@ int i = 1;
     if (config.currentIndex < config.numberOfLoops.integerValue) {
         [self playAudios:[[NSMutableArray alloc] initWithArray:self.musicArray copyItems:YES] configurate:config];
     } else {
-        NSLog(@"真的结束了");
+        NSLog(@"**************************真的结束了**************************");
         
         [_musicArray removeAllObjects];
         [_musicsDict removeAllObjects];
     }
 }
+
+- (void)timer:(NSTimer *)timer
+{
+    MGAudioElement *element = timer.userInfo;
+    
+    CGFloat currentDuration = element.audioPlayer.currentTime;
+    CGFloat totalDuration = [self audioElementDurationWithMusicName:element.musicName];
+    
+    NSLog(@"%f    %f", element.audioPlayer.currentTime, totalDuration);
+    
+    AVAudioPlayer *currentAudioPlayer = element.audioPlayer;
+    if (element.audioPlayer.currentTime >= totalDuration - element.fadeOutInterval.floatValue) {
+        
+        float volume = currentAudioPlayer.volume;
+        volume = volume - 1.0 / MGAUDIO_FADE_STEPS;
+        volume = volume < 0.1 ? 0.1 : volume;
+        currentAudioPlayer.volume = volume;
+    }
+    
+}
+
+- (CGFloat)audioElementDurationWithMusicName:(NSString *)musicName
+{
+    NSString *path1 = [[NSBundle mainBundle] pathForResource:musicName ofType:@"mp3"];
+    NSURL *audioFileURL = [NSURL fileURLWithPath:path1];
+    AVURLAsset*audioAsset = [AVURLAsset URLAssetWithURL:audioFileURL options:nil];
+    CMTime audioDuration = audioAsset.duration;
+    float totalDuration = CMTimeGetSeconds(audioDuration);
+    return totalDuration;
+}
+
+
+
+
+#pragma mark -
+#pragma mark - fade
+- (void)fadeIn:(NSTimer *)timer
+{
+    AVAudioPlayer *player = timer.userInfo;
+    float volume = player.volume;
+    volume = volume + 1.0 / MGAUDIO_FADE_STEPS;
+    volume = volume > 1.0 ? 1.0 : volume;
+    player.volume = volume;
+    
+    NSLog(@"volume: %f", volume);
+    
+    
+    if (volume >= 1.0) {
+        [timer invalidate];
+    }
+}
+
+
+
+
 
 - (NSMutableArray *)musicArray
 {

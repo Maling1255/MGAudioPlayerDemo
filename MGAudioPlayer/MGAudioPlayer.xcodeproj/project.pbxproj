@@ -19,6 +19,7 @@
 		F864C48522FD497700E71306 /* breath_out.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F864C48222FD497700E71306 /* breath_out.mp3 */; };
 		F864C48822FD51CF00E71306 /* MGAudioPlayerConfigurate.m in Sources */ = {isa = PBXBuildFile; fileRef = F864C48722FD51CF00E71306 /* MGAudioPlayerConfigurate.m */; };
 		F864C48B22FD52BD00E71306 /* AVAudioPlayer+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = F864C48A22FD52BD00E71306 /* AVAudioPlayer+Extension.m */; };
+		F864C48E22FD5D5200E71306 /* MGAudioElement.m in Sources */ = {isa = PBXBuildFile; fileRef = F864C48D22FD5D5200E71306 /* MGAudioElement.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,8 @@
 		F864C48722FD51CF00E71306 /* MGAudioPlayerConfigurate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MGAudioPlayerConfigurate.m; sourceTree = "<group>"; };
 		F864C48922FD52BD00E71306 /* AVAudioPlayer+Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AVAudioPlayer+Extension.h"; sourceTree = "<group>"; };
 		F864C48A22FD52BD00E71306 /* AVAudioPlayer+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AVAudioPlayer+Extension.m"; sourceTree = "<group>"; };
+		F864C48C22FD5D5200E71306 /* MGAudioElement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MGAudioElement.h; sourceTree = "<group>"; };
+		F864C48D22FD5D5200E71306 /* MGAudioElement.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MGAudioElement.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +82,8 @@
 				F864C46B22FD45B700E71306 /* ViewController.m */,
 				F864C47D22FD466500E71306 /* MGAudioPlayer.h */,
 				F864C47E22FD466500E71306 /* MGAudioPlayer.m */,
+				F864C48C22FD5D5200E71306 /* MGAudioElement.h */,
+				F864C48D22FD5D5200E71306 /* MGAudioElement.m */,
 				F864C48622FD51CF00E71306 /* MGAudioPlayerConfigurate.h */,
 				F864C48722FD51CF00E71306 /* MGAudioPlayerConfigurate.m */,
 				F864C48922FD52BD00E71306 /* AVAudioPlayer+Extension.h */,
@@ -172,6 +177,7 @@
 				F864C47F22FD466500E71306 /* MGAudioPlayer.m in Sources */,
 				F864C48822FD51CF00E71306 /* MGAudioPlayerConfigurate.m in Sources */,
 				F864C47722FD45B800E71306 /* main.m in Sources */,
+				F864C48E22FD5D5200E71306 /* MGAudioElement.m in Sources */,
 				F864C48B22FD52BD00E71306 /* AVAudioPlayer+Extension.m in Sources */,
 				F864C46922FD45B700E71306 /* AppDelegate.m in Sources */,
 			);
