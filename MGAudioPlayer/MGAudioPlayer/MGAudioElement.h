@@ -14,10 +14,13 @@ NS_ASSUME_NONNULL_BEGIN
 @interface MGAudioElement : NSObject <NSCopying>
 
 @property (nonatomic, copy) NSString *musicName;
+// 需要播放时长
 @property (nonatomic, copy) NSString *voiceDuration;
 @property (nonatomic, copy) NSString *fadeInInterval;
 @property (nonatomic, copy) NSString *fadeOutInterval;
 @property (nonatomic, strong) AVAudioPlayer *audioPlayer;
+
+//@property (nonatomic, assign) MGAudioPlayerConfigurate *configurate;
 
 
 @end
