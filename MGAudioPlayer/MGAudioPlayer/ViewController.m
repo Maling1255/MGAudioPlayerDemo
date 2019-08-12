@@ -73,8 +73,8 @@
     MGAudioElement *audioElement1 = [[MGAudioElement alloc] init];
     audioElement1.musicName = @"inhale";
     audioElement1.voiceDuration = @"4";
-    audioElement1.fadeInInterval = @"1.5";
-    audioElement1.fadeOutInterval = @"0.8";
+    audioElement1.fadeInInterval = @"3";
+    audioElement1.fadeOutInterval = @"0.5";
     
     MGAudioElement *audioElement3 = [[MGAudioElement alloc] init];
     audioElement3.musicName = @"hold";
@@ -101,14 +101,14 @@
     MGAudioElement *audioElement1 = [[MGAudioElement alloc] init];
     audioElement1.musicName = @"inhale";
     audioElement1.voiceDuration = @"7";
-    audioElement1.fadeInInterval = @"2";
+    audioElement1.fadeInInterval = @"3.5";
     audioElement1.fadeOutInterval = @"1";
     
     MGAudioElement *audioElement2 = [[MGAudioElement alloc] init];
     audioElement2.musicName = @"exhale";
     audioElement2.voiceDuration = @"7";
     audioElement2.fadeInInterval = @"1";
-    audioElement2.fadeOutInterval = @"3";
+    audioElement2.fadeOutInterval = @"3.5";
     
     [[MGAudioPlayer sharedManager] playAudios:@[audioElement1, audioElement2 ].mutableCopy configurate:configurate];
     
@@ -123,8 +123,8 @@
     MGAudioElement *audioElement1 = [[MGAudioElement alloc] init];
     audioElement1.musicName = @"inhale";
     audioElement1.voiceDuration = @"4";
-    audioElement1.fadeInInterval = @"1.5";
-    audioElement1.fadeOutInterval = @"1";
+    audioElement1.fadeInInterval = @"3";
+    audioElement1.fadeOutInterval = @"0.5";
     
     MGAudioElement *audioElement3 = [[MGAudioElement alloc] init];
     audioElement3.musicName = @"hold";
@@ -135,8 +135,8 @@
     MGAudioElement *audioElement2 = [[MGAudioElement alloc] init];
     audioElement2.musicName = @"exhale";
     audioElement2.voiceDuration = @"4";
-    audioElement2.fadeInInterval = @"1";
-    audioElement2.fadeOutInterval = @"2";
+    audioElement2.fadeInInterval = @"0.5";
+    audioElement2.fadeOutInterval = @"3";
     
     MGAudioElement *audioElement4 = [[MGAudioElement alloc] init];
     audioElement4.musicName = @"hold";
@@ -157,16 +157,16 @@
     
     
     MGAudioElement *audioElement1 = [[MGAudioElement alloc] init];
-    audioElement1.musicName = @"breath_in";
+    audioElement1.musicName = @"inhale";
     audioElement1.voiceDuration = @"4";
-    audioElement1.fadeInInterval = @"2";
-    audioElement1.fadeOutInterval = @"0.2";
+    audioElement1.fadeInInterval = @"3";
+    audioElement1.fadeOutInterval = @"0.5";
     
     MGAudioElement *audioElement2 = [[MGAudioElement alloc] init];
-    audioElement2.musicName = @"breath_out";
+    audioElement2.musicName = @"exhale";
     audioElement2.voiceDuration = @"4";
-    audioElement2.fadeInInterval = @"1";
-    audioElement2.fadeOutInterval = @"2";
+    audioElement2.fadeInInterval = @"0.5";
+    audioElement2.fadeOutInterval = @"3";
     
     [[MGAudioPlayer sharedManager] playAudios:@[audioElement1, audioElement2].mutableCopy configurate:configurate];
 }
@@ -199,19 +199,19 @@
     audioElement1.musicName = @"breathe_guide";
     audioElement1.voiceDuration = @"10";
     audioElement1.fadeInInterval = @"1";
-    audioElement1.fadeOutInterval = @"1";
+    audioElement1.fadeOutInterval = @"5";
     
     MGAudioElement *audioElement2 = [[MGAudioElement alloc] init];
     audioElement2.musicName = @"breathe_guide";
     audioElement2.voiceDuration = @"10";
     audioElement2.fadeInInterval = @"1";
-    audioElement2.fadeOutInterval = @"1";
+    audioElement2.fadeOutInterval = @"5";
     
     MGAudioElement *audioElement3 = [[MGAudioElement alloc] init];
     audioElement3.musicName = @"breathe_guide";
     audioElement3.voiceDuration = @"10";
     audioElement3.fadeInInterval = @"1";
-    audioElement3.fadeOutInterval = @"1";
+    audioElement3.fadeOutInterval = @"5";
     
     [[MGAudioPlayer sharedManager] playAudios:@[audioElement1, audioElement2, audioElement3].mutableCopy configurate:configurate];
     
