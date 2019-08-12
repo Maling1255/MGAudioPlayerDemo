@@ -19,6 +19,7 @@
 @property (nonatomic, strong) NSMutableArray *musicArray;
 @property (nonatomic, copy) NSString *preAudioName;
 @property (nonatomic, assign) NSInteger index; // 播放声音数组索引
+@property (nonatomic, strong) NSMutableArray *timerArray;
 
 
 // 监控进度
@@ -74,6 +75,7 @@ static NSMutableDictionary *_musicsDict;
 - (void)playAudios:(NSMutableArray *)array configurate:(MGAudioPlayerConfigurate *)configurate
 {
 
+//    _timerArray = [NSMutableArray array];
     _index = 0;
     NSLog(@"configurate  %p", configurate);
     [self.musicArray removeAllObjects];
@@ -97,12 +99,14 @@ static NSMutableDictionary *_musicsDict;
         NSURL *url = [[NSBundle mainBundle] URLForResource:audio.musicName withExtension:@"mp3"];
         player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
         player.delegate = self;
-        [player prepareToPlay];
+        
         self.currentPlayer = player;
         
         audio.audioPlayer = player;
         audio.audioPlayer.audioConfig = config;
         _musicsDict[audio.musicName] = audio;
+        
+        NSLog(@"____________________________________________________________________________________________  %p", player);
     }
     player.audioConfig = config;
     player.volume = 0;
@@ -112,7 +116,8 @@ static NSMutableDictionary *_musicsDict;
     
     // 淡入过程
     NSTimeInterval interval = audio.fadeInInterval.floatValue / MGAUDIO_FADE_STEPS;
-    [NSTimer scheduledTimerWithTimeInterval:interval target:self selector:@selector(fadeInTimer:) userInfo:player repeats:YES];
+    [NSTimer scheduledTimerWithTimeInterval:interval target:self selector:@selector(fadeInTimer:) userInfo:audio repeats:YES];
+    [player prepareToPlay];
     [player play];
     
     // 实际的单个音频播放进度，监听播放进度 (控制淡出过程)
@@ -141,10 +146,9 @@ static NSMutableDictionary *_musicsDict;
             MGAudioElement *element = _musicArray[_index];
 //            element.audioPlayer = audio.audioPlayer;
             [self playAudio:element config:audio.audioPlayer.audioConfig];
-//            NSLog(@"播放下一个 %@   %@  %@  ||  %p %p", element.musicName, audio.musicName, element ,element.audioPlayer, audio.audioPlayer);
+            NSLog(@"播放下一个 %@   %@  %@  ||  %p %p", element.musicName, audio.musicName, element ,element.audioPlayer, audio.audioPlayer);
             
-            NSLog(@"element: %p  %p", element, element.audioPlayer);
-            
+//            NSLog(@"element: %p  %p", element, element.audioPlayer);
         }
         else
         {
@@ -154,10 +158,7 @@ static NSMutableDictionary *_musicsDict;
             [self finishPlaying:audio.audioPlayer.audioConfig];
         }
         
-        
-        
-        
-        
+
         self.currentPlayTime = 0;
         [timer invalidate];
         timer = nil;
@@ -170,7 +171,16 @@ static NSMutableDictionary *_musicsDict;
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
     
-    // 每次进来释放上一个监听播放进度的定时器
+    // 每次进来释放上一个监听播放进度的定时器, (实际声音比要求声音短时， 提前结束了 盛放定时器)
+//    [self removeAVTimer];
+    
+    if (player.isPlaying) {
+//        [player pause];
+    }
+}
+
+- (void)removeAVTimer
+{
     if (self.avTimer) {
         [self.avTimer invalidate];
         self.avTimer = nil;
@@ -182,12 +192,15 @@ static NSMutableDictionary *_musicsDict;
     NSLog(@"播放完成 config: %p    %ld", config, config.currentIndex);
     
     if (config.currentIndex < config.numberOfLoops.integerValue) {
+        
         [self playAudios:[[NSMutableArray alloc] initWithArray:self.musicArray copyItems:YES] configurate:config];
+        
     } else {
         NSLog(@"**************************真的结束了**************************");
         
         [_musicArray removeAllObjects];
         [_musicsDict removeAllObjects];
+        [self removeAVTimer];
     }
 }
 
@@ -211,13 +224,13 @@ static NSMutableDictionary *_musicsDict;
 #pragma mark - fade
 - (void)fadeInTimer:(NSTimer *)timer
 {
-    AVAudioPlayer *player = timer.userInfo;
-    float volume = player.volume;
+    MGAudioElement *element = timer.userInfo;
+    float volume = element.audioPlayer.volume;
     volume = volume + 1.0 / MGAUDIO_FADE_STEPS;
     volume = volume > 1.0 ? 1.0 : volume;
-    player.volume = volume;
+    element.audioPlayer.volume = volume;
     
-//    NSLog(@"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ %f", volume);
+    NSLog(@"↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ %f   %@", volume, element.musicName);
     if (volume >= 1.0) {
         [timer invalidate];
     }
@@ -227,20 +240,52 @@ static NSMutableDictionary *_musicsDict;
 {
     CGFloat currentDuration = element.audioPlayer.currentTime;
     CGFloat totalDuration = [self audioElementDurationWithMusicName:element.musicName];
+    CGFloat voiceDuration = element.voiceDuration.floatValue;
+    CGFloat fadeOutInterval = element.fadeOutInterval.floatValue;
     
     //    NSLog(@"%f    %f", element.audioPlayer.currentTime, totalDuration);
-    
     AVAudioPlayer *currentAudioPlayer = element.audioPlayer;
-    if (currentDuration >= totalDuration - element.fadeOutInterval.floatValue) {
+    
+    if (totalDuration >= voiceDuration) {
+
+        if (currentDuration >= voiceDuration - fadeOutInterval) {   // 按照要求声音总时长计算
+            float volume = currentAudioPlayer.volume;
+            volume = volume - 1.0 / MGAUDIO_FADE_STEPS;
+            volume = volume < 0.05 ? 0.00 : volume;
+            
+            NSLog(@"volume要求111:↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ %f                %@", volume, element.musicName);
+            currentAudioPlayer.volume = volume;
+            
+            if (volume == 0 && currentAudioPlayer.isPlaying) {
+//                [currentAudioPlayer pause];
+               
+                // 实际声音时长比要求声音时长 多些， 在要求声音播放时长范围内结束， 释放定时器
+                [self removeAVTimer];
+//                [currentAudioPlayer stop];
+            }
+        } else {
+            
+//            if (![element.musicName isEqualToString:@"in_ok"]) {
+//                NSLog(@".....................  %f   [%f  %f]             %@", currentAudioPlayer.volume, currentDuration, voiceDuration - fadeOutInterval, element.musicName);
+//            }
+        }
         
-        float volume = currentAudioPlayer.volume;
-        volume = volume - 1.0 / MGAUDIO_FADE_STEPS;
-        volume = volume < 0.05 ? 0.005 : volume;
+    } else {
         
-        
-        NSLog(@"volume: %f                %@", volume, element.musicName);
-        
-        currentAudioPlayer.volume = volume;
+        if (currentDuration >= totalDuration - fadeOutInterval) {   // 按照实际声音总时长计算
+            float volume = currentAudioPlayer.volume;
+            volume = volume - 1.0 / MGAUDIO_FADE_STEPS;
+            volume = volume < 0.05 ? 0.00 : volume;
+            
+            NSLog(@"volume实际2222:↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ %f                %@", volume, element.musicName);
+            currentAudioPlayer.volume = volume;
+            
+            if (volume == 0) {
+//                [currentAudioPlayer pause];
+                
+                [self removeAVTimer];
+            }
+        }
     }
 }
 

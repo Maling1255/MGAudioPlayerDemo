@@ -20,6 +20,10 @@
 		F864C48822FD51CF00E71306 /* MGAudioPlayerConfigurate.m in Sources */ = {isa = PBXBuildFile; fileRef = F864C48722FD51CF00E71306 /* MGAudioPlayerConfigurate.m */; };
 		F864C48B22FD52BD00E71306 /* AVAudioPlayer+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = F864C48A22FD52BD00E71306 /* AVAudioPlayer+Extension.m */; };
 		F864C48E22FD5D5200E71306 /* MGAudioElement.m in Sources */ = {isa = PBXBuildFile; fileRef = F864C48D22FD5D5200E71306 /* MGAudioElement.m */; };
+		F8BA1383230141CA00AC86EB /* breathe_guide.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8BA1382230141CA00AC86EB /* breathe_guide.mp3 */; };
+		F8BA138D23017EF100AC86EB /* hold_ok.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8BA138A23017EF100AC86EB /* hold_ok.mp3 */; };
+		F8BA138E23017EF100AC86EB /* in_ok.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8BA138B23017EF100AC86EB /* in_ok.mp3 */; };
+		F8BA138F23017EF100AC86EB /* out_ok.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8BA138C23017EF100AC86EB /* out_ok.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +48,10 @@
 		F864C48A22FD52BD00E71306 /* AVAudioPlayer+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AVAudioPlayer+Extension.m"; sourceTree = "<group>"; };
 		F864C48C22FD5D5200E71306 /* MGAudioElement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MGAudioElement.h; sourceTree = "<group>"; };
 		F864C48D22FD5D5200E71306 /* MGAudioElement.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MGAudioElement.m; sourceTree = "<group>"; };
+		F8BA1382230141CA00AC86EB /* breathe_guide.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = breathe_guide.mp3; sourceTree = "<group>"; };
+		F8BA138A23017EF100AC86EB /* hold_ok.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = hold_ok.mp3; sourceTree = "<group>"; };
+		F8BA138B23017EF100AC86EB /* in_ok.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = in_ok.mp3; sourceTree = "<group>"; };
+		F8BA138C23017EF100AC86EB /* out_ok.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = out_ok.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,7 +99,11 @@
 				F864C48122FD497700E71306 /* breath_hold.mp3 */,
 				F864C48022FD497700E71306 /* breath_in.mp3 */,
 				F864C48222FD497700E71306 /* breath_out.mp3 */,
+				F8BA1382230141CA00AC86EB /* breathe_guide.mp3 */,
 				F864C46D22FD45B700E71306 /* Main.storyboard */,
+				F8BA138A23017EF100AC86EB /* hold_ok.mp3 */,
+				F8BA138B23017EF100AC86EB /* in_ok.mp3 */,
+				F8BA138C23017EF100AC86EB /* out_ok.mp3 */,
 				F864C47022FD45B800E71306 /* Assets.xcassets */,
 				F864C47222FD45B800E71306 /* LaunchScreen.storyboard */,
 				F864C47522FD45B800E71306 /* Info.plist */,
@@ -158,11 +170,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				F864C47422FD45B800E71306 /* LaunchScreen.storyboard in Resources */,
+				F8BA138D23017EF100AC86EB /* hold_ok.mp3 in Resources */,
 				F864C47122FD45B800E71306 /* Assets.xcassets in Resources */,
+				F8BA138F23017EF100AC86EB /* out_ok.mp3 in Resources */,
 				F864C46F22FD45B700E71306 /* Main.storyboard in Resources */,
 				F864C48522FD497700E71306 /* breath_out.mp3 in Resources */,
+				F8BA1383230141CA00AC86EB /* breathe_guide.mp3 in Resources */,
 				F864C48422FD497700E71306 /* breath_hold.mp3 in Resources */,
 				F864C48322FD497700E71306 /* breath_in.mp3 in Resources */,
+				F8BA138E23017EF100AC86EB /* in_ok.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,6 +338,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = TU4FCR75VS;
 				INFOPLIST_FILE = MGAudioPlayer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
