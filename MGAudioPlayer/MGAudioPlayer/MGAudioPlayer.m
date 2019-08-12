@@ -225,14 +225,21 @@ static NSMutableDictionary *_musicsDict;
 - (void)fadeInTimer:(NSTimer *)timer
 {
     MGAudioElement *element = timer.userInfo;
+    
+    CGFloat fadeInInterval = element.fadeInInterval.floatValue;
     float volume = element.audioPlayer.volume;
-    volume = volume + 1.0 / MGAUDIO_FADE_STEPS;
-    volume = volume > 1.0 ? 1.0 : volume;
+//    volume = volume + 1.0 / MGAUDIO_FADE_STEPS;
+    CGFloat diffValue = (1.0/fadeInInterval/MGAUDIO_FADE_STEPS);
+    volume = volume + diffValue;
+    
+//    NSLog(@"***********************************  %f  %f", volume, diffValue);
+    volume = volume >= 1.0 ? 1.0 : volume;
     element.audioPlayer.volume = volume;
     
-    NSLog(@"↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ %f   %@", volume, element.musicName);
+    NSLog(@"↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ %f  %f  %f  %@", volume, diffValue, fadeInInterval, element.musicName);
     if (volume >= 1.0) {
         [timer invalidate];
+        NSLog(@".\n\n");
     }
 }
 
@@ -246,14 +253,16 @@ static NSMutableDictionary *_musicsDict;
     //    NSLog(@"%f    %f", element.audioPlayer.currentTime, totalDuration);
     AVAudioPlayer *currentAudioPlayer = element.audioPlayer;
     
+    // 如果实际的声音时长 > 要求的播放的时长， 使用要求播放的计算淡出 否则使用实际声音时间计算
     if (totalDuration >= voiceDuration) {
 
         if (currentDuration >= voiceDuration - fadeOutInterval) {   // 按照要求声音总时长计算
             float volume = currentAudioPlayer.volume;
-            volume = volume - 1.0 / MGAUDIO_FADE_STEPS;
+//            volume = volume - 1.0 / MGAUDIO_FADE_STEPS;
+            volume = volume - (1.0/fadeOutInterval/MGAUDIO_FADE_STEPS);
             volume = volume < 0.05 ? 0.00 : volume;
             
-            NSLog(@"volume要求111:↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ %f                %@", volume, element.musicName);
+//            NSLog(@"volume要求111:↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ %f                %@", volume, element.musicName);
             currentAudioPlayer.volume = volume;
             
             if (volume == 0 && currentAudioPlayer.isPlaying) {
@@ -274,10 +283,11 @@ static NSMutableDictionary *_musicsDict;
         
         if (currentDuration >= totalDuration - fadeOutInterval) {   // 按照实际声音总时长计算
             float volume = currentAudioPlayer.volume;
-            volume = volume - 1.0 / MGAUDIO_FADE_STEPS;
+//            volume = volume - 1.0 / MGAUDIO_FADE_STEPS;
+            volume = volume - (1.0/fadeOutInterval/MGAUDIO_FADE_STEPS);
             volume = volume < 0.05 ? 0.00 : volume;
             
-            NSLog(@"volume实际2222:↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ %f                %@", volume, element.musicName);
+//            NSLog(@"volume实际2222:↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ %f                %@", volume, element.musicName);
             currentAudioPlayer.volume = volume;
             
             if (volume == 0) {

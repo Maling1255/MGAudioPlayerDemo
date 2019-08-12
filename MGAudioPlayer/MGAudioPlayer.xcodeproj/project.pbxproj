@@ -24,6 +24,9 @@
 		F8BA138D23017EF100AC86EB /* hold_ok.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8BA138A23017EF100AC86EB /* hold_ok.mp3 */; };
 		F8BA138E23017EF100AC86EB /* in_ok.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8BA138B23017EF100AC86EB /* in_ok.mp3 */; };
 		F8BA138F23017EF100AC86EB /* out_ok.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8BA138C23017EF100AC86EB /* out_ok.mp3 */; };
+		F8BA13932301A2C100AC86EB /* exhale.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8BA13902301A2C100AC86EB /* exhale.mp3 */; };
+		F8BA13942301A2C100AC86EB /* inhale.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8BA13912301A2C100AC86EB /* inhale.mp3 */; };
+		F8BA13952301A2C100AC86EB /* hold.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8BA13922301A2C100AC86EB /* hold.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +55,9 @@
 		F8BA138A23017EF100AC86EB /* hold_ok.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = hold_ok.mp3; sourceTree = "<group>"; };
 		F8BA138B23017EF100AC86EB /* in_ok.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = in_ok.mp3; sourceTree = "<group>"; };
 		F8BA138C23017EF100AC86EB /* out_ok.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = out_ok.mp3; sourceTree = "<group>"; };
+		F8BA13902301A2C100AC86EB /* exhale.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = exhale.mp3; sourceTree = "<group>"; };
+		F8BA13912301A2C100AC86EB /* inhale.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = inhale.mp3; sourceTree = "<group>"; };
+		F8BA13922301A2C100AC86EB /* hold.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = hold.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +106,9 @@
 				F864C48022FD497700E71306 /* breath_in.mp3 */,
 				F864C48222FD497700E71306 /* breath_out.mp3 */,
 				F8BA1382230141CA00AC86EB /* breathe_guide.mp3 */,
+				F8BA13902301A2C100AC86EB /* exhale.mp3 */,
+				F8BA13922301A2C100AC86EB /* hold.mp3 */,
+				F8BA13912301A2C100AC86EB /* inhale.mp3 */,
 				F864C46D22FD45B700E71306 /* Main.storyboard */,
 				F8BA138A23017EF100AC86EB /* hold_ok.mp3 */,
 				F8BA138B23017EF100AC86EB /* in_ok.mp3 */,
@@ -171,7 +180,10 @@
 			files = (
 				F864C47422FD45B800E71306 /* LaunchScreen.storyboard in Resources */,
 				F8BA138D23017EF100AC86EB /* hold_ok.mp3 in Resources */,
+				F8BA13942301A2C100AC86EB /* inhale.mp3 in Resources */,
+				F8BA13932301A2C100AC86EB /* exhale.mp3 in Resources */,
 				F864C47122FD45B800E71306 /* Assets.xcassets in Resources */,
+				F8BA13952301A2C100AC86EB /* hold.mp3 in Resources */,
 				F8BA138F23017EF100AC86EB /* out_ok.mp3 in Resources */,
 				F864C46F22FD45B700E71306 /* Main.storyboard in Resources */,
 				F864C48522FD497700E71306 /* breath_out.mp3 in Resources */,
